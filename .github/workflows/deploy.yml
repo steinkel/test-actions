@@ -9,7 +9,6 @@ jobs:
   deployStage:
     name: deploy to stage
     if: github.event.ref == 'refs/heads/stage'
-    needs: [build]
     runs-on: ubuntu-20.04
     environment:
       name: stage
