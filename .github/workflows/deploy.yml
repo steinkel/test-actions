@@ -6,10 +6,6 @@ on:
       - uat
       # - master
 jobs:
-  build:
-    runs-on: ubuntu-20.04
-    steps:
-      - uses: actions/checkout@v2
   deployStage:
     name: deploy to stage
     if: github.event.ref == 'refs/heads/stage'
@@ -19,6 +15,7 @@ jobs:
       name: stage
       url: 'https://example.com'
     steps:
+      - uses: actions/checkout@v2
       - name: Setup PHP
         uses: shivammathur/setup-php@v2 #https://github.com/shivammathur/setup-php
         with:
