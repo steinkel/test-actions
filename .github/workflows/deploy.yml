@@ -6,19 +6,45 @@ on:
       - uat
       # - master
 jobs:
-
-  deploy:
-    name: deploy to permanent branch
+  build:
     runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v2
-      - name: Set stage env vars
-        if: github.event.ref == 'refs/heads/stage'
-        run: |
-          echo "DEPLOY_HOST=${{ secrets.HOST_STAGE }}" >> $GITHUB_ENV
-      - name: view stage env vars
-        run: |
-          echo "DEPLOY_HOST = ${DEPLOY_HOST}"
+
+  deployStage:
+    name: deploy to stage
+    if: github.event.ref == 'refs/heads/stage'
+    needs: [build]
+    runs-on: ubuntu-20.04
+    environment:
+      name: stage
+      url: 'https://example.com'
+    steps:
+      - name: deploy
+        run: echo I am deploying!
+  deployUat:
+    name: deploy to uat
+    if: github.event.ref == 'refs/heads/uat'
+    needs: [build]
+    runs-on: ubuntu-20.04
+    environment:
+      name: uat
+      url: 'https://example.com'
+    steps:
+      - name: deploy
+        run: echo I am deploying!
+  deployProd:
+    name: deploy to prod
+    if: github.event.ref == 'refs/heads/master'
+    needs: [build]
+    runs-on: ubuntu-20.04
+    environment:
+      name: prod
+      url: 'https://example.com'
+    steps:
+      - name: deploy
+        run: echo I am deploying!
+
 #            - name: remote deploy
 #             uses: appleboy/ssh-action@master
 #              with:
