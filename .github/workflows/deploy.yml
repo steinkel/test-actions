@@ -6,9 +6,14 @@ on:
       - uat
       # - master
 jobs:
+#  build:
+#    runs-on: ubuntu-20.04
+#    steps:
+#      - uses: actions/checkout@v2
   deployStage:
     name: deploy to stage
     if: github.event.ref == 'refs/heads/stage'
+#    needs: [build]
     runs-on: ubuntu-20.04
     environment:
       name: stage
@@ -21,10 +26,11 @@ jobs:
           php-version: 7.4
           extensions: mbstring, intl, pdo_sqlite, pdo_mysql
       - name: deploy
-        run: ls -lah && cd deploy && php deployer.phar
+        run: cd deploy && php deployer.phar
   deployUat:
     name: deploy to uat
     if: github.event.ref == 'refs/heads/uat'
+#    needs: [build]
     runs-on: ubuntu-20.04
     environment:
       name: uat
@@ -35,6 +41,7 @@ jobs:
   deployProd:
     name: deploy to prod
     if: github.event.ref == 'refs/heads/master'
+#    needs: [build]
     runs-on: ubuntu-20.04
     environment:
       name: prod
