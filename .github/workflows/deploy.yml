@@ -21,7 +21,7 @@ jobs:
       url: 'https://example.com'
     steps:
       - name: deploy
-        run: echo I am deploying!
+        run: echo I am deploying to ${{ secrets.HOST }}
   deployUat:
     name: deploy to uat
     if: github.event.ref == 'refs/heads/uat'
